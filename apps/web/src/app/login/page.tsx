@@ -1,10 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
 export default function LoginPage() {
   const [phone, setPhone] = useState("");
+  const router = useRouter();
   const [message, setMessage] = useState("");
 
   async function sendOtp() {
@@ -18,7 +20,8 @@ export default function LoginPage() {
       phone: phone.trim(),
     });
 
-    setMessage(error ? error.message : "OTP sent successfully.");
+    if (error) setMessage(error.message);
+    else router.push(`/login/verify?phone=${encodeURIComponent(phone.trim())}`);
   }
 
   return (

@@ -1,3 +1,4 @@
+import { getMyDashboardRoute } from "@/lib/kisan/route";
 "use client";
 
 import { useEffect, useState } from "react";
@@ -43,7 +44,7 @@ export default function VerifyPage() {
       return;
     }
 
-    router.push("/onboarding");
+    router.replace(await getMyDashboardRoute());
   }
 
   return (

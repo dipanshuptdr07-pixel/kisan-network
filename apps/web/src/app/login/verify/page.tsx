@@ -1,6 +1,6 @@
-import { getMyDashboardRoute } from "@/lib/kisan/route";
 "use client";
 
+import { getMyDashboardRoute } from "@/lib/kisan/route";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";

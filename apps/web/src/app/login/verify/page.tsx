@@ -1,16 +1,19 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
 export default function VerifyPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const phone = searchParams.get("phone") || "";
+  const [phone, setPhone] = useState("");
   const [otp, setOtp] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setPhone(new URLSearchParams(window.location.search).get("phone") || "");
+  }, []);
 
   async function verifyOtp() {
     if (otp.length !== 6) {
@@ -18,7 +21,13 @@ export default function VerifyPage() {
       return;
     }
 
+    if (!phone) {
+      setMessage("Phone number missing hai.");
+      return;
+    }
+
     setLoading(true);
+
     const supabase = createClient();
 
     const { error } = await supabase.auth.verifyOtp({
@@ -43,13 +52,12 @@ export default function VerifyPage() {
       <p>{phone}</p>
 
       <input
+        type="tel"
         inputMode="numeric"
         maxLength={6}
         placeholder="6 digit OTP"
         value={otp}
-        onChange={(e) =>
-          setOtp(e.target.value.replace(/\D/g, ""))
-        }
+        onChange={(e) => setOtp(e.target.value.replace(/\D/g, ""))}
       />
 
       <button onClick={verifyOtp} disabled={loading}>

@@ -32,7 +32,14 @@ export default function OnboardingPage() {
       return;
     }
 
-    router.push("/");
+    const dashboardRoutes: Record<string, string> = {
+      farmer: "/dashboard/farmer",
+      buyer: "/dashboard/buyer",
+      company: "/dashboard/company",
+      expert: "/dashboard/expert"
+    };
+
+    router.push(dashboardRoutes[role] || "/");
   }
 
   return (
